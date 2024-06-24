@@ -25,29 +25,34 @@ public class App {
         Mat imageWithColor = new Mat();
 
         // Iniciando a captura de frames
-        grabber.start();
 
+        try {
+            grabber.start();
 
-        while ((frameCaptured = grabber.grab()) != null) {
+            while ((frameCaptured = grabber.grab()) != null) {
 
-            // Convertendo o frame capturado para uma imagem com cores
-            imageWithColor = converter.convert(frameCaptured);
+                // Convertendo o frame capturado para uma imagem com cores
+                imageWithColor = converter.convert(frameCaptured);
 
-            RectVector faces = faceDetectionService.execute(imageWithColor, faceDetector);
+                RectVector faces = faceDetectionService.execute(imageWithColor, faceDetector);
 
-            System.out.println(faces.size());
+                System.out.println(faces.size());
 
-            drawRectanglesInFaces(faces, imageWithColor);
+                drawRectanglesInFaces(faces, imageWithColor);
 
-            showImage(canvasFrame, frameCaptured);
+                showImage(canvasFrame, frameCaptured);
 
-            if(faces.size() == 1){
-                System.out.println("Face detectada");
-                stop(grabber, canvasFrame);
+                if(faces.size() == 1){
+                    System.out.println("Face detectada");
+                    stop(grabber, canvasFrame);
+                }
+
             }
 
+        } catch (FrameGrabber.Exception e) {
+            System.out.println("Erro ao capturar frames: " + e.getMessage());
+            stop(grabber, canvasFrame);
         }
-
 
     }
 
