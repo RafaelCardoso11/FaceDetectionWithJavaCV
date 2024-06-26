@@ -20,6 +20,7 @@ public class FaceDetectionService {
         // Detectando as faces na imagem em escala de cinza e armazenando em um vetor
         faceDetector.detectMultiScale(imageGray, faces, 5, 1, 0,  new Size(150, 150), new Size(500, 500));
 
+
         return faces;
 
     }
