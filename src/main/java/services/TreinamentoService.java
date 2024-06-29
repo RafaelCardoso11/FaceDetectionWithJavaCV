@@ -5,6 +5,7 @@ import org.bytedeco.opencv.opencv_core.MatVector;
 import org.bytedeco.opencv.opencv_face.EigenFaceRecognizer;
 import org.bytedeco.opencv.opencv_face.FaceRecognizer;
 import org.bytedeco.opencv.opencv_face.FisherFaceRecognizer;
+import org.bytedeco.opencv.opencv_face.LBPHFaceRecognizer;
 
 import java.io.File;
 import java.nio.IntBuffer;
@@ -34,7 +35,7 @@ public class TreinamentoService {
             Mat photo = imread(image.getAbsolutePath(), IMREAD_GRAYSCALE);
             int id = Integer.parseInt(image.getName().split("_")[0]);
             photos.put(counter, photo);
-            labelsBuf.put(counter, id);
+            labelsBuf.put(counter, 1);
             counter++;
         }
 
@@ -42,12 +43,11 @@ public class TreinamentoService {
         eigenfaces.train(photos, labels);
         eigenfaces.save("src/main/resources/classificadorEigenFaces.yml");
 
-
         FaceRecognizer fisherFaces = FisherFaceRecognizer.create();
         fisherFaces.train(photos, labels);
         fisherFaces.save("src/main/resources/classificadorFisherFaces.yml");
 
-        FaceRecognizer lbph = FisherFaceRecognizer.create();
+        FaceRecognizer lbph = LBPHFaceRecognizer.create();
         lbph.train(photos, labels);
         lbph.save("src/main/resources/classificadorLBPH.yml");
 
